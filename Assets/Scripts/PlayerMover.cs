@@ -4,46 +4,76 @@ using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
+
+    // where the player is currently headed 
     public Vector3 destination;
+
+    // is the player currently moving?
     public bool isMoving = false;
+
+    // what easetype to use for iTweening
     public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
 
+    // how fast we move
     public float moveSpeed = 1.5f;
+
+    // delay to use before any call to iTween
     public float iTweenDelay = 0f;
 
-    // Start is called before the first frame update
+    Board m_board;
+
+    // Use this for initialization
+    void Awake()
+    {
+        m_board = Object.FindObjectOfType<Board>().GetComponent<Board>();
+    }
+
     void Start()
     {
-        // Move(new Vector3(2f, 0f, 0f), 1f);
-        // Move(new Vector3(4f, 0f, 0f), 3f);
-        // Move(new Vector3(4f, 0f, 2f), 5f);
-        // Move(new Vector3(4f, 0f, 4f), 7f);
-        // StartCoroutine("Test");
+        UpdateBoard();
+
+        // locate the PlayerNode and initialize
+        if (m_board != null && m_board.PlayerNode != null)
+        {
+            m_board.PlayerNode.InitNode();
+        }
     }
 
-    // IEnumerator Test()
-    // {
-    //     yield return new WaitForSeconds(2f);
-    //     MoveRight();
-    //     yield return new WaitForSeconds(2f);
-    //     MoveRight();
-    // }
+    // public method to invole the MoveRoutine
+    public void Move(Vector3 destinationPos, float delayTime = 0.25f)
+    {
+        // only move if the destination is at a valid Node
+        if (m_board != null)
+        {
+            Node targetNode = m_board.FindNodeAt(destinationPos);
 
-    public void Move(Vector3 destinationPos, float delayTime = 0.25f) {
-        StartCoroutine(MoveRoutine(destinationPos, delayTime));
+            if (targetNode != null && m_board.PlayerNode.LinkedNodes.Contains(targetNode))
+            {
+                // start the coroutine MoveRoutine
+                StartCoroutine(MoveRoutine(destinationPos, delayTime));
+            }
+        }
     }
 
-    IEnumerator MoveRoutine(Vector3 destinationPos, float delayTime) {
+    // coroutine used to move the player
+    IEnumerator MoveRoutine(Vector3 destinationPos, float delayTime)
+    {
+        // we are moving
         isMoving = true;
+
+        // set the destination to the destinationPos being passed into the coroutine
         destination = destinationPos;
 
+        // pause the coroutine for a brief periof
         yield return new WaitForSeconds(delayTime);
+
+        // move the player toward the destinationPos using the easeType and moveSpeed variables
         iTween.MoveTo(gameObject, iTween.Hash(
             "x", destinationPos.x,
             "y", destinationPos.y,
             "z", destinationPos.z,
             "delay", iTweenDelay,
-            "eastype", easeType,
+            "easetype", easeType,
             "speed", moveSpeed
         ));
 
@@ -52,28 +82,51 @@ public class PlayerMover : MonoBehaviour
             yield return null;
         }
 
+        // stop the iTween immediately
         iTween.Stop(gameObject);
+
+        // set the player position to the destination explicitly
         transform.position = destinationPos;
+
+        // we are not moving
         isMoving = false;
+
+        UpdateBoard();
     }
 
-    public void MoveLeft() {
-        Vector3 newPosition = transform.position + new Vector3(-2, 0, 0);
-        Move(newPosition, 0);
-    }
-    
-    public void MoveRight() {
-        Vector3 newPosition = transform.position + new Vector3(2, 0, 0);
-        Move(newPosition, 0);
-    }
-    
-    public void MoveForward() {
-        Vector3 newPosition = transform.position + new Vector3(0, 0, 2);
+    // move the player one space in the negative X direction
+    public void MoveLeft()
+    {
+        Vector3 newPosition = transform.position + new Vector3(-Board.spacing, 0f, 0f);
         Move(newPosition, 0);
     }
 
-    public void MoveBackward() {
-        Vector3 newPosition = transform.position + new Vector3(0, 0, -2);
+    // move the player one space in the positive X direction
+    public void MoveRight()
+    {
+        Vector3 newPosition = transform.position + new Vector3(Board.spacing, 0f, 0f);
         Move(newPosition, 0);
+    }
+
+    // move the player one space in the positive Z direction
+    public void MoveForward()
+    {
+        Vector3 newPosition = transform.position + new Vector3(0f, 0f, Board.spacing);
+        Move(newPosition, 0);
+    }
+
+    // move the player one space in the negative Z direction
+    public void MoveBackward()
+    {
+        Vector3 newPosition = transform.position + new Vector3(0f, 0f, -Board.spacing);
+        Move(newPosition, 0);
+    }
+
+    void UpdateBoard()
+    {
+        if (m_board != null)
+        {
+            m_board.UpdatePlayerNode();
+        }
     }
 }
