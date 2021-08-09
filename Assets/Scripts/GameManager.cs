@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
     // delay in between game stages
     public float delay = 1f;
 
+    public UnityEvent setupEvent;
+    public UnityEvent startLevelEvent;
+    public UnityEvent playLevelEvent;
+    public UnityEvent endLevelEvent;
+
 	void Awake()
     {
         // populate Board and PlayerManager components
@@ -62,13 +67,22 @@ public class GameManager : MonoBehaviour
 	// the initial stage after the level is loaded
 	IEnumerator StartLevelRoutine()
     {
+        if (setupEvent != null)
+        {
+            setupEvent.Invoke();
+        }
+
         m_player.playerInput.InputEnabled = false;
         while (!m_hasLevelStarted)
         {
             //HasLeveld = true;
             yield return null;
         }
-        yield return null;
+        
+        if (startLevelEvent != null)
+        {
+            startLevelEvent.Invoke();
+        }
     }
 
 	// gameplay stage
@@ -78,9 +92,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         m_player.playerInput.InputEnabled = true;
 
+        if (playLevelEvent != null)
+        {
+            playLevelEvent.Invoke();
+        }
+
         while (!m_isGameOver)
         {
             yield return null; 
+            m_isGameOver = IsWinner();
         }
 	}
 
@@ -88,6 +108,11 @@ public class GameManager : MonoBehaviour
 	IEnumerator EndLevelRoutine()
 	{
         m_player.playerInput.InputEnabled = false;
+
+        if (endLevelEvent != null)
+        {
+            endLevelEvent.Invoke();
+        }
         
         while (!m_hasLevelFinished)
         {
@@ -106,5 +131,14 @@ public class GameManager : MonoBehaviour
     public void PlayLevel()
     {
         m_hasLevelStarted = true;
+    }
+
+    bool IsWinner()
+    {
+        if (m_board.PlayerNode != null)
+        {
+            return (m_board.PlayerNode == m_board.GoalNode);
+        }
+        return false;
     }
 }
