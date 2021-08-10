@@ -4,43 +4,54 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover))]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : TurnManager
 {
-    public PlayerMover playerMover;
+	// reference to PlayerMover and PlayerInput components
+	public PlayerMover playerMover;
     public PlayerInput playerInput;
-    
-    void Awake()
+
+    protected override void Awake()
     {
-        playerMover = GetComponent<PlayerMover>();
+        base.Awake();
+
+		// cache references to PlayerMover and PlayerInput
+		playerMover = GetComponent<PlayerMover>();
         playerInput = GetComponent<PlayerInput>();
-        playerInput.InputEnabled = true;
+
+		// make sure that input is enabled when we begin
+		playerInput.InputEnabled = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (playerMover.isMoving)
+		// if the player is currently moving or if it's not the Player's turn, ignore user input
+        if (playerMover.isMoving || m_gameManager.CurrentTurn != Turn.Player)
         {
             return;
         }
 
-        playerInput.GetKeyInput();
+		// get keyboard input
+		playerInput.GetKeyInput();
 
-        if (playerInput.V == 0)
+		// connect user input with PlayerMover's Move methods
+		if (playerInput.V == 0)
         {
             if (playerInput.H < 0)
             {
                 playerMover.MoveLeft();
-            } else if (playerInput.H > 0)
+            }
+            else if (playerInput.H > 0)
             {
                 playerMover.MoveRight();
             }
-        } else if (playerInput.H == 0)
+        }
+        else if (playerInput.H == 0)
         {
             if (playerInput.V < 0)
             {
                 playerMover.MoveBackward();
-            } else if (playerInput.V > 0)
+            }
+            else if (playerInput.V > 0)
             {
                 playerMover.MoveForward();
             }
