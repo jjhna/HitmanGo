@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 579289864738662366}
   - component: {fileID: 579289864738662362}
   m_Layer: 0
-  m_Name: guard
+  m_Name: EnemyGuard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,6 +122,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  directionToMove: {x: 0, y: 0, z: 2}
+  movementType: 1
   standTime: 1
 --- !u!114 &579289864738662366
 MonoBehaviour:
