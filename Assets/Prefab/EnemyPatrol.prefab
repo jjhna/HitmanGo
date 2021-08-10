@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 579289864738662366}
   - component: {fileID: 579289864738662362}
   m_Layer: 0
-  m_Name: EnemyGuard
+  m_Name: EnemyPatrol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,9 +103,9 @@ MonoBehaviour:
   destination: {x: 0, y: 0, z: 0}
   faceDestination: 1
   isMoving: 0
-  easeType: 17
-  moveSpeed: 1.5
-  rotateTime: 0.5
+  easeType: 10
+  moveSpeed: 4
+  rotateTime: 0.3
   iTweenDelay: 0
   finishMovementEvent:
     m_PersistentCalls:
