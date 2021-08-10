@@ -2,17 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMover : MonoBehaviour
+public class EnemyMover : Mover
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
-        
+        base.Awake();
+
+        // EnemyMovers always face the direction they are moving
+        faceDestination = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Start()
     {
-        
+        base.Start();
+        //StartCoroutine(TestMovementRoutine());
     }
+
+	//IEnumerator TestMovementRoutine()
+	//{
+	//	yield return new WaitForSeconds(5f);
+	//	MoveForward();
+
+	//	yield return new WaitForSeconds(2f);
+	//	MoveRight();
+
+	//	yield return new WaitForSeconds(2f);
+ //       MoveForward();
+
+	//	yield return new WaitForSeconds(2f);
+	//	MoveForward();
+
+	//	yield return new WaitForSeconds(2f);
+ //       MoveBackward();
+
+	//	yield return new WaitForSeconds(2f);
+	//	MoveBackward();
+	//}
+
+
 }
