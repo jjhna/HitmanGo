@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 579289864738662367}
   - component: {fileID: 579289864738662366}
   - component: {fileID: 579289864738662362}
+  - component: {fileID: 2722598436492154611}
+  - component: {fileID: 3675898635701757606}
   m_Layer: 0
   m_Name: EnemyPatrol
   m_TagString: Untagged
@@ -64,7 +66,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: -2627363814259711634, guid: d27c254dc7c544b49aa4961617ea16ab, type: 3}
   - {fileID: 3861360076532870448, guid: d27c254dc7c544b49aa4961617ea16ab, type: 3}
-  - {fileID: -1284678189595390020, guid: d27c254dc7c544b49aa4961617ea16ab, type: 3}
+  - {fileID: 2100000, guid: a459058945b19b44a91e52005f879ef9, type: 2}
   - {fileID: 6906593049827584563, guid: d27c254dc7c544b49aa4961617ea16ab, type: 3}
   - {fileID: 2423389376654928831, guid: d27c254dc7c544b49aa4961617ea16ab, type: 3}
   m_StaticBatchInfo:
@@ -137,6 +139,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef84f290d4a55040b63cbbfe2afd7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3675898635701757606}
+        m_TargetAssemblyTypeName: EnemyDeath, Assembly-CSharp
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &579289864738662362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,3 +167,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionToSearch: {x: 0, y: 0, z: 2}
+--- !u!114 &2722598436492154611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345480579729838211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c6afc07a29a574a80316ddfc56bfd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3675898635701757606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345480579729838211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db95e33e4b6471346a8715d951b3a328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offscreenOffset: {x: 0, y: 10, z: 0}
+  deathDelay: 0
+  offscreenDelay: 1
+  iTweenDelay: 0
+  easeType: 11
+  moveTime: 0.7
